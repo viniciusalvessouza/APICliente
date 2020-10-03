@@ -1,7 +1,8 @@
 var express = require("express");
 const app =express();
 const bodyParser = require("body-parser");
-const rotaCliente = require("./routes/clientes");
+const rotaCliente = require("./routes/clientes/clientes");
+const rotaCidade = require("./routes/cidades/cidades");
 
 
 
@@ -21,16 +22,19 @@ app.use((res, req ,next)=>{
 });
 
 app.use("/clientes",rotaCliente);
+app.use("/cidades",rotaCidade);
 
 app.use((res,req,next)=>{
-	const error =  new Error("Nao encontrado");
+	const error =  new Error("Nao funcionou");
 	error.status="404"
 	next(error.message);
 });
+
+
 
 app.use((res,req,next)=>{
 	res.status(error.status || 500)
 	return res.send({error: {mensagem: error.message}})
 });
 
-app.listen(8080, function(){console.log("servidor rodando em http://127.0.0.1:8080")});
+app.listen(8080, function(){console.log("servidor rodando em "+process.env.SERVER_HOST+":"+ process.env.SERVER_PORT)});
